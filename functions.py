@@ -66,24 +66,45 @@ def run_alg_one_step(sorted_series, strictness=3):
   return (1, candidate_position) if delta > rejection_region else (0, None)
 
 
-def run_modified_thompson_tau_test(data, target_column_name=None, target_column_index=None, strictness=3, sorted=False):
+def run_modified_thompson_tau_test(data, target_column_index=None, target_column_name=None, strictness=3, sorted=False):
+  assert type(data) in [pd.DataFrame, pd.Series, list]
+  
   if type(data) == pd.DataFrame:
-    if target_column_name is None:
-      if target_column_index is None:
+    if target_column_index is None:
+      if target_column_name is None:
         raise ValueError('Either the name or index of the target column needs to be provided.')
       else:
-        series = data[data.columns[target_column_index]]
-    else:
-      series = data[target_column_name]
-
+        target_column_index = data.columns.index(target_column_name)
+    df = data
+    
+  if type(data) == pd.Series:
+    target_column_index = 0
+    df = pd.DataFrame(data)
+    
   if type(data) == list:
     if target_column_index is None:
       # assuming the list is one-dimentional
-      series = pd.Series(data[0])
-    else:
-      series = pd.Series([ row[target_column_index] for row in data ])
-    
-  sorted_series = series if sorted else series.sort_values(inplace=True)
+      target_column_index = 0
+    df = pd.Dataframe(data)
+      
+  target_column = df[df.columns[target_column_index]]
+  
+  # adding is_outlier and outlier_desc columns
+  is_outlier = [0] * len(df) 
+  outlier_col = pd.DataFrame({'is_outlier':is_outlier})
+  df_with_outlier_col = pd.concat([df, outlier_col], ignore_index=True, axis=1)
+  df_with_outlier_col = df_with_outlier_col if sorted else df_with_outlier_col.sort_values(by=(df_with_outlier_col.columns[target_column_index]), inplace=True)
+  
   while True:
-    
-  res = run_alg_one_step(sorted_series, strictness=strictness)
+    #modified_series = pd.Series(sorted(list(set(series)), reverse=True))
+    res, position = run_alg_one_step(sorted_series, strict=strict)
+    if res == 0:  # The current records is not an outlier, so the rest of the records are not outlier either.
+      break
+    else: # The current records is an outlier. Remove it and run the test on the rest of the dataset
+      if position == 0:
+        df_with_outlier_col.iloc[sorted_series.index[0], df_with_outlier_col.columns.get_loc('is_outlier_v')] = 1
+        sorted_series = sorted_series.iloc[1:]
+      else:
+        df_with_outlier_col.iloc[sorted_series.index[-1], df_with_outlier_col.columns.get_loc('is_outlier_v')] = 1
+        sorted_series = sorted_series.iloc[:-1]
+  
