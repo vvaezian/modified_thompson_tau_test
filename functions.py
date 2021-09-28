@@ -78,7 +78,7 @@ def process_data(data, target_column_name=None, target_column_index=None, strict
 
   if type(data) == list:
     if target_column_index is None:
-      # assuming the list is one-dimentional and containes the data
+      # assuming the list is one-dimentional
       series = pd.Series(data[0])
 
   sorted_series = series if sorted else series.sort_values(inplace=True)
