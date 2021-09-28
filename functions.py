@@ -87,7 +87,7 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
       target_column_index = 0
     df = pd.Dataframe(data)
   
-  # adding is_outlier and outlier_desc columns
+  # adding is_outlier column to hold the data for output
   is_outlier = [0] * len(df) 
   outlier_col = pd.DataFrame({'is_outlier':is_outlier})
   df_with_outlier_col = pd.concat([df, outlier_col], ignore_index=True, axis=1)
