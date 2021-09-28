@@ -40,7 +40,7 @@ def calc_tau(n, strictness=3):
   return (t * (n - 1))/(math.sqrt(n) * math.sqrt(n - 2 + t**2)) 
 
 
-def calc_modified_thompson_tau_test(sorted_series, strictness=3):
+def run_alg_one_step(sorted_series, strictness=3):
   '''
   Determine whether the biggest (absolute value) element of the given series is an outlier or not
   using the Modified Thompson Tau Test.
@@ -66,7 +66,7 @@ def calc_modified_thompson_tau_test(sorted_series, strictness=3):
   return (1, candidate_position) if delta > rejection_region else (0, None)
 
 
-def process_data(data, target_column_name=None, target_column_index=None, strictness=3, sorted=False):
+def run_modified_thompson_tau_test(data, target_column_name=None, target_column_index=None, strictness=3, sorted=False):
   if type(data) == pd.DataFrame:
     if target_column_name is None:
       if target_column_index is None:
@@ -82,4 +82,4 @@ def process_data(data, target_column_name=None, target_column_index=None, strict
       series = pd.Series(data[0])
 
   sorted_series = series if sorted else series.sort_values(inplace=True)
-  res = calc_modified_thompson_tau_test(sorted_series, strictness=strictness)
+  res = run_alg_one_step(sorted_series, strictness=strictness)
