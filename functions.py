@@ -100,9 +100,9 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
       break
     else: # The current records is an outlier. Remove it and run the test on the rest of the dataset
       if position == 0:
-        df_with_outlier_col_sorted.iloc[target_column_sorted.index[0], df_with_outlier_col_sorted.columns.get_loc('is_outlier_v')] = 1
+        df_with_outlier_col_sorted.iloc[target_column_sorted.index[0], df_with_outlier_col_sorted.columns.get_loc('is_outlier')] = 1
         target_column_sorted = target_column_sorted.iloc[1:]
       else:
-        df_with_outlier_col_sorted.iloc[target_column_sorted.index[-1], df_with_outlier_col_sorted.columns.get_loc('is_outlier_v')] = 1
+        df_with_outlier_col_sorted.iloc[target_column_sorted.index[-1], df_with_outlier_col_sorted.columns.get_loc('is_outlier')] = 1
         target_column_sorted = target_column_sorted.iloc[:-1]
   
