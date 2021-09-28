@@ -80,6 +80,10 @@ def run_modified_thompson_tau_test(data, target_column_name=None, target_column_
     if target_column_index is None:
       # assuming the list is one-dimentional
       series = pd.Series(data[0])
-
+    else:
+      series = pd.Series([ row[target_column_index] for row in data ])
+    
   sorted_series = series if sorted else series.sort_values(inplace=True)
+  while True:
+    
   res = run_alg_one_step(sorted_series, strictness=strictness)
