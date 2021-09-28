@@ -95,7 +95,7 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
   target_column_sorted = df_with_outlier_col_sorted[df_with_outlier_col_sorted.columns[target_column_index]]
   
   while True:
-    res, position = run_alg_one_step(target_column_sorted, strict=strict)
+    res, position = run_alg_one_step(target_column_sorted, strictness=strictness)
     if res == 0:  # The current records is not an outlier, so the rest of the records are not outlier either.
       break
     else: # The current records is an outlier. Remove it and run the test on the rest of the dataset
