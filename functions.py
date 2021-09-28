@@ -82,4 +82,4 @@ def process_data(data, target_column_name=None, target_column_index=None, strict
       series = pd.Series(data[0])
 
   sorted_series = series if sorted else series.sort_values(inplace=True)
-  res = calc_modified_thompson_tau_test(sorted_series)
+  res = calc_modified_thompson_tau_test(sorted_series, strictness=strictness)
