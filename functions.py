@@ -88,6 +88,9 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
       target_column_index = 0
     df = pd.DataFrame(data)
   
+  # TODO: is this needed?
+  df.reset_index(inplace=True, drop=True)  # 'drop=True' avoids adding the index as a column
+  
   # adding is_outlier column to hold the data for output
   df_with_outlier_col = df
   df_with_outlier_col['is_outlier'] = 0
