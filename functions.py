@@ -66,7 +66,8 @@ def run_alg_one_step(sorted_series, strictness=3):
   return (1, candidate_position) if delta > rejection_region else (0, None)
 
 
-def run_modified_thompson_tau_test(data, target_column_index=None, target_column_name=None, strictness=3, sorted=False):
+def run_modified_thompson_tau_test(data, target_column_index=None, target_column_name=None, strictness=3, is_sorted=False):
+  
   assert type(data) in [pd.DataFrame, pd.Series, list]
   
   if type(data) == pd.DataFrame:
@@ -85,24 +86,27 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
     if target_column_index is None:
       # assuming the list is one-dimentional
       target_column_index = 0
-    df = pd.Dataframe(data)
+    df = pd.DataFrame(data)
   
   # adding is_outlier column to hold the data for output
-  is_outlier = [0] * len(df) 
-  outlier_col = pd.DataFrame({'is_outlier':is_outlier})
-  df_with_outlier_col = pd.concat([df, outlier_col], ignore_index=True, axis=1)
-  df_with_outlier_col_sorted = df_with_outlier_col if sorted else df_with_outlier_col.sort_values(by=(df_with_outlier_col.columns[target_column_index]), inplace=True)
-  target_column_sorted = df_with_outlier_col_sorted[df_with_outlier_col_sorted.columns[target_column_index]]
+  df_with_outlier_col = df
+  df_with_outlier_col['is_outlier'] = 0
+  df_with_outlier_col_sorted = df_with_outlier_col if is_sorted else df_with_outlier_col.sort_values(by=target_column_index)
+  
+  import copy
+  target_column_sorted_copy = copy.deepcopy(df_with_outlier_col_sorted[df_with_outlier_col_sorted.columns[target_column_index]])
   
   while True:
-    res, position = run_alg_one_step(target_column_sorted, strictness=strictness)
+    print(target_column_sorted_copy)
+    res, position = run_alg_one_step(target_column_sorted_copy, strictness=strictness)
     if res == 0:  # The current records is not an outlier, so the rest of the records are not outlier either.
       break
     else: # The current records is an outlier. Remove it and run the test on the rest of the dataset
       if position == 0:
-        df_with_outlier_col_sorted.iloc[target_column_sorted.index[0], -1] = 1
-        target_column_sorted = target_column_sorted.iloc[1:]
+        df_with_outlier_col_sorted.loc[target_column_sorted_copy.index[0], 'is_outlier'] = 1
+        target_column_sorted_copy = target_column_sorted_copy.iloc[1:]
       else:
-        df_with_outlier_col_sorted.iloc[target_column_sorted.index[-1], -1] = 1
-        target_column_sorted = target_column_sorted.iloc[:-1]
+        df_with_outlier_col_sorted.loc[target_column_sorted_copy.index[-1], 'is_outlier'] = 1
+        target_column_sorted_copy = target_column_sorted_copy.iloc[:-1]
   
+  return df_with_outlier_col_sorted
