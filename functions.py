@@ -70,10 +70,14 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
   
   assert type(data) in [pd.DataFrame, pd.Series, list]
   
+  # making sure we have the data we need
   if type(data) == pd.DataFrame:
     if target_column_index is None:
       if target_column_name is None:
-        raise ValueError('Either the name or index of the target column needs to be provided.')
+        if len(data.columns) > 1:
+          raise ValueError('Either the name or index of the target column needs to be provided.')
+        else:
+          target_column_index = 0
       else:
         target_column_index = data.columns.index(target_column_name)
     df = data
@@ -88,18 +92,19 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
       target_column_index = 0
     df = pd.DataFrame(data)
   
-  # TODO: is this needed?
-  # df.reset_index(inplace=True, drop=True)  # 'drop=True' avoids adding the index as a column
   
   # adding is_outlier column to hold the data for output
   df_with_outlier_col = df
   df_with_outlier_col['is_outlier'] = 0
   df_with_outlier_col_sorted = df_with_outlier_col if is_sorted else df_with_outlier_col.sort_values(by=target_column_index)
   
+  # deep-copying the target column (sorted) to be used by the alg
   import copy
   target_column_sorted_copy = copy.deepcopy(df_with_outlier_col_sorted[df_with_outlier_col_sorted.columns[target_column_index]])
   
+  # running the algorithm on the sorted target column 
   while True:
+    # run the alg for the biggest element (absolute value), get the result and update the data accordingly
     res, position = run_alg_one_step(target_column_sorted_copy, strictness=strictness)
     if res == 0:  # The current records is not an outlier, so the rest of the records are not outlier either.
       break
