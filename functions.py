@@ -1,10 +1,6 @@
-import pandas as pd
-
-
-
-
 def run_modified_thompson_tau_test(data, target_column_index=None, target_column_name=None, strictness=3, is_sorted=False):
   
+  import pandas as pd
   assert type(data) in [pd.DataFrame, pd.Series, list]
   
   ######## making sure we have the data we need ########
