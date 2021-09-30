@@ -89,7 +89,7 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
     df = pd.DataFrame(data)
   
   # TODO: is this needed?
-  df.reset_index(inplace=True, drop=True)  # 'drop=True' avoids adding the index as a column
+  # df.reset_index(inplace=True, drop=True)  # 'drop=True' avoids adding the index as a column
   
   # adding is_outlier column to hold the data for output
   df_with_outlier_col = df
@@ -100,17 +100,14 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
   target_column_sorted_copy = copy.deepcopy(df_with_outlier_col_sorted[df_with_outlier_col_sorted.columns[target_column_index]])
   
   while True:
-    print(target_column_sorted_copy)
     res, position = run_alg_one_step(target_column_sorted_copy, strictness=strictness)
     if res == 0:  # The current records is not an outlier, so the rest of the records are not outlier either.
       break
-    else: # The current records is an outlier
+    else: # The current records is an outlier. Remove it and run the test on the rest of the dataset
       if position == 0:
-        # update the 'is_outlier' column for the relevant row
         df_with_outlier_col_sorted.loc[target_column_sorted_copy.index[0], 'is_outlier'] = 1
-        # run the test on the rest of the dataset
         target_column_sorted_copy = target_column_sorted_copy.iloc[1:]
-      else:  # position == -1
+      else:
         df_with_outlier_col_sorted.loc[target_column_sorted_copy.index[-1], 'is_outlier'] = 1
         target_column_sorted_copy = target_column_sorted_copy.iloc[:-1]
   
