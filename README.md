@@ -6,9 +6,9 @@ pip install modified-thompson-tau-test
 ```python
 from Modified_Thompson_Tau_Test.modified_thompson_tau_test import run_modified_thompson_tau_test
 ```
-You can pass a list, a Pandas series or a Pandas DataFrame to the function:
+You can pass a list, a Pandas Series or a Pandas DataFrame to the function:
 ```python
-run_modified_thompson_tau_test([2, 3, -50,  1, 0, 10, 1000])
+run_modified_thompson_tau_test([2, 3, -50, 1, 0, 10, 1000])
 ```
 The function returns the results as a Pandas DataFrame where the column `is_outlier` shows the result.
 ```
