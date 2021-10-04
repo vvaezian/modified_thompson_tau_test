@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.py
+src/Modified_Thompson_Tau_Test/__init__.py
+src/Modified_Thompson_Tau_Test/modified_thompson_tau_test.py
+src/modified_thompson_tau_test.egg-info/PKG-INFO
+src/modified_thompson_tau_test.egg-info/SOURCES.txt
+src/modified_thompson_tau_test.egg-info/dependency_links.txt
+src/modified_thompson_tau_test.egg-info/requires.txt
+src/modified_thompson_tau_test.egg-info/top_level.txt
