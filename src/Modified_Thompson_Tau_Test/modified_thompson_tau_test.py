@@ -2,7 +2,7 @@
 def run_modified_thompson_tau_test(data, target_column_index=None, target_column_name=None, strictness=3, is_sorted=False):
   
   import pandas as pd
-  assert type(data) in [pd.DataFrame, pd.Series, list]
+  assert type(data) in [ pd.DataFrame, pd.Series, list ]
   
   ######## making sure we have the data we need ########
   if type(data) == pd.DataFrame:
@@ -59,6 +59,7 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
     return inf_val
 
 
+
   def calc_tau(n, strictness=3):
     '''Calculate the rejection threshold.'''
     if n < 3:
@@ -66,6 +67,7 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
     import math
     t = get_T_critical_value(n - 2, strictness=strictness)
     return (t * (n - 1))/(math.sqrt(n) * math.sqrt(n - 2 + t**2)) 
+
 
 
   def run_alg_one_step(sorted_series, strictness=3):
@@ -94,6 +96,7 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
     return (1, candidate_position) if delta > rejection_region else (0, None)
   
   
+
   ######## Processing ########
   # adding is_outlier column to hold the data for output
   df_with_outlier_col = df
