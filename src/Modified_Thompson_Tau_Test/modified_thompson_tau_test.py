@@ -1,6 +1,15 @@
 
 def run_modified_thompson_tau_test(data, target_column_index=None, target_column_name=None, strictness=3, is_sorted=False):
+  '''
+  Run the Modified Thompson Tau Test on the given data to determine which elements are outliers.
   
+  Keyword arguments:
+  data -- a list, Series, or DataFrame that containes the data that needs to be evaluated
+  target_column_index -- index of the column that needs to be evaluated
+  target_column_name -- name of the column that needs to be evaluated
+  strictness -- how aggresive the outlier detection should be.
+  is_sorted -- indicating whether data is already sorted (useful for large datasets)
+  '''
   import pandas as pd
   assert type(data) in [ pd.DataFrame, pd.Series, list ]
   
