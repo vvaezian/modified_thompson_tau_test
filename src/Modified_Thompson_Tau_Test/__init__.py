@@ -1,1 +1,1 @@
-#from .modified_thompson_tau_test import run_modified_thompson_tau_test
+from .modified_thompson_tau_test import run_modified_thompson_tau_test
