@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/vvaezian/modified_thompson_tau_test",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(where='src'),
     install_requires=[
         "pandas",
     ],
