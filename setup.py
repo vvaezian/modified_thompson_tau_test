@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="modified-thompson-tau-test",
-    version="0.1.1",
+    version="0.1.2",
     author="Vahid Vaezian",
     author_email="vahid.vaezian@gmail.com",
     description="Implementation of Modified Thompson Tau Test in Python",
