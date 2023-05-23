@@ -92,7 +92,7 @@ def run_modified_thompson_tau_test(data, target_column_index=None, target_column
     first_element = sorted_series.iloc[0]
     last_element = sorted_series.iloc[-1]
 
-    if abs(first_element) > abs(last_element):
+    if abs(first_element - sample_mean) > abs(last_element - sample_mean):
       candidate_position = 0  # first
       outlier_candidate = first_element
     else:
