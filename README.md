@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/modified-thompson-tau-test.svg?)](https://badge.fury.io/py/modified-thompson-tau-test)
+
 ### Installation
 ```
 pip install modified-thompson-tau-test
